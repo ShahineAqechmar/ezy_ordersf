@@ -7,7 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Product;
 use Symfony\Component\HttpFoundation\Session;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class PanierController extends Controller
 {
@@ -40,6 +42,9 @@ class PanierController extends Controller
         return $this->render('Core/Panier/panier.html.twig', array('articles' => $articles));
     }
 
+    /**
+     *@Route("/supprimer/{id}", name="supprimer")
+     */
     public function supprimerAction($id,Request $request)
     {
         //$session = $this->container->get('session');
@@ -52,11 +57,13 @@ class PanierController extends Controller
             $session->set('panier',$panier);
             $this->get('session')->getFlashBag()->add('success','Article supprimé avec succès');
         }
+        return new RedirectResponse($request->headers->get('referer'));
 
-        return $this->redirect($this->generateUrl('panier'));
     }
 
-    
+    /**
+     *@Route("/ajouter/{id}", name="ajouter")
+     */
     public function ajouterAction($id,Request $request)
     {
 
@@ -82,9 +89,12 @@ class PanierController extends Controller
         $session->set('panier',$panier);
 
 
-        return $this->redirect($this->generateUrl('panier'));
+        return new RedirectResponse($request->headers->get('referer'));
     }
 
+    /**
+     *@Route("/Panier", name="panier")
+     */
     public function panierAction(Request $request)
     {
         //$session = $this->container->get('session');
@@ -94,7 +104,17 @@ class PanierController extends Controller
         $em = $this->getDoctrine()->getManager();
         $produits = $em->getRepository('AppBundle:Product')->findArray(array_keys($session->get('panier')));
 
-        return $this->render('Core/Panier/Panier.html.twig', array('produits' => $produits,
+        return $this->render('Core/Panier/Commande.html.twig', array('produits' => $produits,
             'panier' => $session->get('panier')));
     }
+
+    /**
+     *@Route("/commande", name="commande")
+     */
+    public function commandeAction()
+    {
+        return $this->render('core/panier/commande.html.twig');
+    }
+
+
 }

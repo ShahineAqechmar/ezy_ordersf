@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    {% if product|length != 0 %}
     <div>{{ render(controller('AppBundle:Panier:menu')) }}</div>
     <div class="row">
         {% for produit in product %}
@@ -8,12 +9,12 @@
                      style="height:200px;">
                     <div class="span7">
 
-                        <ul><img style="max-width:200px; margin-top: 20px;"
+                        <ul><img style="max-width:30px; margin-top: 20px;"
                                  src="{{ asset('uploads/pictures/' ~ produit.picture) }}"></ul>
                         <ul>{{ produit.productname }}</ul>
                         <ul>{{ produit.productdescription }}</ul>
                         <ul>Prix: {{ produit.unitaryprice }} € <p></ul>
-                                {% if panier[produit.id] is not defined %}
+                        {% if panier[produit.id] is not defined %}
                             <form action="{{ path('ajouter', { 'id' : produit.id }) }}" method="get">
                                 <select name="qte" class="span1">
                                     {% for i in 1..10 %}
@@ -23,37 +24,27 @@
 
                                 <div>
                                     <button class="btn btn-primary">Ajouter au panier</button>
+
                                 </div>
                             </form>
                         {% else %}
                             <div>
+                                <a href="{{ path('supprimer', { 'id' : produit.id }) }}" class="btn btn-danger">Supprimer</a>
                                 <a href="{{ path('panier') }}" class="btn btn-primary">Le produit est déjà dans votre
                                     panier</a>
                             </div>
-                            {% endif %}
-
-                            {#
-                            <!--
-                            <form action="{{ path('ajouter', {'id' : produit.id}) }}" method="get">
-                                <select name="qte" class="span1">
-                                    {%for i in 1..10%}
-                                    <option value="{{  i }}">{{ i }}</option>
-                                    {% endfor %}
-                                </select>
-                                <div>
-                                    <button type="button" class="btn btn-default btn-sm">
-                                    <span class="glyphicon glyphicon-shopping-cart"></span>Ajouter</button>
-                                </div>
-                            </form>
-                            !-->
-                            #}
-
-
+                        {% endif %}
                     </div>
                 </div>
-
             </section>
         {% endfor %}
+        {% else %}
+        <div> <ul>Aucun produit n'est actuellement disponible</ul></div>
+        {% endif %}
     </div>
 
 {% endblock %}
+{#TODO regler le probleme si pas d'article dans la bdd qui redirige vers 404#}
+{#TODO Afficher uniquement les articles disponibles#}
+{#TODO develloper ajout et suppression d'articles et de categories#}
+{#TODO mettre en place redirection à l'ajout et à la suppression des categories#}

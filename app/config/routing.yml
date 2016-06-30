@@ -3,14 +3,3 @@ app:
     type:     annotation
 logout:
     path: /logout
-supprimer:
-    path:  /supprimer/{id}
-    defaults: { _controller: AppBundle:Panier:supprimer }
-
-ajouter:
-    path:  /ajouter/{id}
-    defaults: { _controller: AppBundle:Panier:ajouter }
-
-panier:
-    path:  /
-    defaults: { _controller: AppBundle:Panier:panier }
