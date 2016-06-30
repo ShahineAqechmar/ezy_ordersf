@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('homepage') }}">
+                <img style="max-width:45px; margin-top: -13px;"
+                     src="{{ asset('pictures/logo-menu.png') }}">
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Carte  <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Traiteur</a></li>
+                        <li><a href="#">Déjeuner</a></li>
+                        <li><a href="#">Salades</a></li>
+                        <li><a href="#">Rapide</a></li>
+                        <li><a href="#">Pâtisseries</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="navbar-brand" href="#">Commander rapidement <span
+                                class="glyphicon glyphicon-cutlery"></span></a>
+                </li>
+                <li>
+                    <a class="navbar-brand" href="#">Commande <span class="glyphicon glyphicon-list-alt"></span></a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        {% if app.user %}
+                            {{ app.user.username }}
+                        {% else %}
+                            Compte
+                        {% endif %}
+                        <span class="glyphicon glyphicon-user"><span class="caret"></span></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ path('login') }}">Connexion</a></li>
+                        <li><a href="{{ path('user_registration') }}">Creer un compte</a></li>
+                        <li><a href="#">Details du compte</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="./logout">Deconnexion</a></li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{ path('productadd') }}">Ajout Produit</a></li>
+                            <li><a href="{{ path('categoryadd') }}">Ajout Categorie</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% block body %}{% endblock %}
+{% block javascripts %}{% endblock %}
+
+<link rel="stylesheet"
+      href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.css') }}">
+<!-- include javascript, jQuery FIRST -->
+<script type="text/javascript" src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+</body>
+</html>
