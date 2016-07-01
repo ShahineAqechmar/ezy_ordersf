@@ -103,8 +103,10 @@ class PanierController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $produits = $em->getRepository('AppBundle:Product')->findArray(array_keys($session->get('panier')));
+        $adress = $em->getRepository('AppBundle:Adress')->findAll();
 
         return $this->render('Core/Panier/Commande.html.twig', array('produits' => $produits,
+            'Adress' => $adress,
             'panier' => $session->get('panier')));
     }
 

@@ -40,14 +40,9 @@ class Category
 
     /**
      * @var Product
-     *
-     * -- Liaison bidirectionelle entre Category et Product
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Category", mappedBy="category")
-     *
-     *
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
      */
-    private $Product;
-
+    private $product;
 
     /**
      * Get id
@@ -111,7 +106,7 @@ class Category
      */
     public function __construct()
     {
-        $this->Product = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->product = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -123,7 +118,7 @@ class Category
      */
     public function addProduct(\AppBundle\Entity\Category $product)
     {
-        $this->Product[] = $product;
+        $this->product[] = $product;
 
         return $this;
     }
@@ -135,7 +130,7 @@ class Category
      */
     public function removeProduct(\AppBundle\Entity\Category $product)
     {
-        $this->Product->removeElement($product);
+        $this->product->removeElement($product);
     }
 
     /**
@@ -145,6 +140,6 @@ class Category
      */
     public function getProduct()
     {
-        return $this->Product;
+        return $this->product;
     }
 }

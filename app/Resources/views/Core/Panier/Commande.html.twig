@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+{% set totalHT = 0 %}
+{% block body %}
+    <h2>Votre panier</h2>
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Quantité</th>
+            <th>Prix unitaire</th>
+            <th>Total HT</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if produits|length == 0 %}
+            <tr>
+                <td colspan="4">Aucun articles dans votre panier</td>
+            </tr>
+        {% endif %}
+
+        {% for produit in produits %}
+            <tr>
+                <form action="{{ path('ajouter', { 'id' : produit.id }) }}" method="get">
+                    <td>{{ produit.productName }}</td>
+                    <td>
+                        <select name="qte" class="span1" onChange="this.form.submit()">
+                            {% for i in 1..10 %}
+                                <option value="{{ i }}" {% if i == panier[produit.id] %} selected="selected" {% endif %}>{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                        <a href="{{ path('supprimer', { 'id' : produit.id }) }}" class="btn btn-danger">Supprimer</a>
+                    </td>
+                    <td>{{ produit.unitaryPrice * 1 }} €</td>
+                    <td>{{ produit.unitaryPrice * panier[produit.id] }} €</td>
+                </form>
+            </tr>
+            {% set totalHT = totalHT + (produit.unitaryPrice * panier[produit.id]) %}
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if produits|length != 0 %}
+        <ul>
+            <td>Total HT : {{ totalHT }} €</td>
+        </ul>
+        <div class="clearfix"></div>
+    {% endif %}
+
+
+    <div>
+    {% for ad in Adress %}
+    {% if  app.user == ad.user %}
+        <ul>Adresse de livraison :
+        <td>{{ ad.number }}</td>
+        <td>{{ ad.street }}</td>
+        <td>{{ ad.postalcode }}</td>
+        <td>{{ ad.city }}</td>
+        </ul>
+        <ul> Informations aditionnelles :
+        <td>{{ ad.additionalinformations }}</td>
+        </ul>
+    {% endif %}
+    {% endfor %}
+
+        <a href="{{ path('adress') }}"><button type="button" class="btn btn-default">Valider la commande</button></a></div>
+        <a href="{{ path('adress') }}"><button type="button" class="btn btn-default">Enregistrer une nouvelle adresse</button></a></div>
+    </div>
+{% endblock %}
+{#TODO rajouter validation , prix total, livraison , selection de l'adresse #}

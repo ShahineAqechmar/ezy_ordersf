@@ -81,16 +81,12 @@ class Product
 
     /**
      * @var Category
-     *
-     * -- Contraintes de validation
      * @Assert\Valid()
      * @Assert\Type(type="AppBundle\Entity\Category")
-     *
-     * -- Liaison bidirectionelle entre Product et Category
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category",inversedBy="product")
-     *
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="product")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
-    private $Category;
+    private $category;
 
     public function __construct()
     {
@@ -227,7 +223,7 @@ class Product
      */
     public function setCategory(\AppBundle\Entity\Category $category = null)
     {
-        $this->Category = $category;
+        $this->category = $category;
 
         return $this;
     }
@@ -239,7 +235,7 @@ class Product
      */
     public function getCategory()
     {
-        return $this->Category;
+        return $this->category;
     }
 
     /**

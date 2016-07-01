@@ -90,6 +90,12 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="Account_Creation_Date", type="datetime")
      */
     private $accountCreationDate;
+
+    /**
+     * @var adress
+     * @ORM\OneToMany(targetEntity="Adress", mappedBy="user")
+     */
+    private $adress;
     
     public function __construct()
     {
@@ -408,5 +414,39 @@ class User implements UserInterface, \Serializable
     public function getRoless()
     {
         return $this->roles;
+    }
+
+    /**
+     * Add adress
+     *
+     * @param \AppBundle\Entity\Adress $adress
+     *
+     * @return User
+     */
+    public function addAdress(\AppBundle\Entity\Adress $adress)
+    {
+        $this->adress[] = $adress;
+
+        return $this;
+    }
+
+    /**
+     * Remove adress
+     *
+     * @param \AppBundle\Entity\Adress $adress
+     */
+    public function removeAdress(\AppBundle\Entity\Adress $adress)
+    {
+        $this->adress->removeElement($adress);
+    }
+
+    /**
+     * Get adress
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAdress()
+    {
+        return $this->adress;
     }
 }
